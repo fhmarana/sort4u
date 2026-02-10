@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Image } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import LoginHello from "@/assets/LoginHello.png";
+
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -53,16 +55,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl flex gap-8 items-center">
+    <div
+  className="min-h-screen flex items-center justify-center p-4"
+  style={{
+    backgroundImage: `url('${LoginHello}')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  }}
+>
+    <div className="w-full max-w-6xl">
         {/* Left Side - Form */}
-        <div className="flex-1 bg-gray-200 rounded-3xl p-12 relative">
-          <Link to="/">
-            <button className="absolute top-6 left-6 w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </button>
-          </Link>
-          
+        <div className="max-w-xl bg-gray-200 rounded-3xl p-12 relative">
+          <button className="absolute top-6 left-6 w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
 
           <div className="max-w-md mx-auto">
             <h1 className="text-4xl font-bold text-center mb-8">WELCOME BACK</h1>
@@ -134,20 +141,13 @@ export default function LoginPage() {
               {/* Footer Links */}
               <div className="text-center space-y-2 pt-4">
                 <a href="#" className="block text-sm text-gray-600 hover:text-gray-800">
-                  <b>Forgot Password?</b>
+                  Forgot Password?
                 </a>
                 <a href="#" className="block text-sm text-gray-600 hover:text-gray-800">
-                  Don't have an account yet? <b>Create an account</b>
+                  Create Account
                 </a>
               </div>
             </form>
-          </div>
-        </div>
-
-        {/* Right Side - Image Placeholder */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="w-64 h-64 bg-black rounded-2xl flex items-center justify-center">
-            <Image className="w-24 h-24 text-white" />
           </div>
         </div>
       </div>
