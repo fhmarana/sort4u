@@ -1,15 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useEffect } from "react"; 
 import checkIcon from "@/assets/check.png"
 import plateIcon from "@/assets/plate.png";
 import reminderIcon from "@/assets/Reminder.png";
 import moneyIcon from "@/assets/Money.png"
-
+import faviconImage from "@/assets/Logo Design for SORT4U Web Application.png";
 
 
 export default function LandingPage() {
+        // Add this useEffect hook
+    useEffect(() => {
+        // Change page title
+        document.title = "SORT4U";
+        
+        // Change favicon
+        const favicon = document.querySelector("link[rel='icon']");
+        if (favicon) {
+            favicon.href = "Logo Design for SORT4U Web Application.png"; // Replace with your actual favicon path
+        } else {
+            const newFavicon = document.createElement('link');
+            newFavicon.rel = 'icon';
+            newFavicon.type = 'Logo Design for SORT4U Web Application.png';
+            newFavicon.href = "Logo Design for SORT4U Web Application.png"; // Replace with your actual favicon path
+            document.head.appendChild(newFavicon);
+        }
+    }, []);
     return (
         <div className="w-full">
+            
             {/* NavBar Section - Responsive */}
             <nav className="flex justify-between items-center bg-white py-4 md:py-6 px-4 sm:px-8 md:px-12 lg:px-20 border-b">
                 <div>
@@ -185,7 +204,7 @@ export default function LandingPage() {
                                 <img src={checkIcon} alt="check" className="w-5 h-5 md:w-15 md:h-15 text-green-600" />
                             </div>
                             <p className="text-xs sm:text-sm font-semibold">
-                                Tools that adapt to your lifestyl, not the other way around
+                                Tools that adapt to your lifestyle, not the other way around
                             </p>
                         </div>
                     </div>
