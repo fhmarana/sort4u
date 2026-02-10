@@ -134,10 +134,10 @@ export default function LoginPage() {
               {/* Footer Links */}
               <div className="text-center space-y-2 pt-4">
                 <a href="#" className="block text-sm text-gray-600 hover:text-gray-800">
-                  Forgot Password?
+                  <b>Forgot Password?</b>
                 </a>
                 <a href="#" className="block text-sm text-gray-600 hover:text-gray-800">
-                  Create Account
+                  Don't have an account yet? <b>Create an account</b>
                 </a>
               </div>
             </form>
