@@ -5,27 +5,10 @@ import checkIcon from "@/assets/check.png"
 import plateIcon from "@/assets/plate.png";
 import reminderIcon from "@/assets/Reminder.png";
 import moneyIcon from "@/assets/Money.png"
-import faviconImage from "@/assets/Logo Design for SORT4U Web Application.png";
+
 
 
 export default function LandingPage() {
-        // Add this useEffect hook
-    useEffect(() => {
-        // Change page title
-        document.title = "SORT4U";
-        
-        // Change favicon
-        const favicon = document.querySelector("link[rel='icon']");
-        if (favicon) {
-            favicon.href = "Logo Design for SORT4U Web Application.png"; // Replace with your actual favicon path
-        } else {
-            const newFavicon = document.createElement('link');
-            newFavicon.rel = 'icon';
-            newFavicon.type = 'Logo Design for SORT4U Web Application.png';
-            newFavicon.href = "Logo Design for SORT4U Web Application.png"; // Replace with your actual favicon path
-            document.head.appendChild(newFavicon);
-        }
-    }, []);
     return (
         <div className="w-full">
             
