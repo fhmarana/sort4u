@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Image } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import LoginHello from "@/assets/LoginHello.png";
 
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -42,15 +46,32 @@ export default function LoginPage() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
-    
-    if (Object.keys(newErrors).length === 0) {
-      console.log('Form submitted:', formData);
-      // Handle login logic here
-    } else {
+
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    setLoading(true);
+    setApiError('');
+
+    try {
+      const response = await axios.post('/auth/login', {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      localStorage.setItem('token', response.data.access_token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      navigate('/dashboard');
+    } catch (error) {
+      const message = error.response?.data?.detail || 'Login failed. Please try again.';
+      setApiError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,16 +85,25 @@ export default function LoginPage() {
     backgroundRepeat: 'no-repeat'
   }}
 >
-    <div className="w-full max-w-6xl">
+    <div className="w-full ml-30">
         {/* Left Side - Form */}
         <div className="max-w-xl bg-gray-200 rounded-3xl p-12 relative">
-          <button className="absolute top-6 left-6 w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
-            <ArrowLeft className="w-5 h-5 text-white" />
-          </button>
+          <Link to="/">
+            <button className="absolute top-6 left-6 w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
+              <ArrowLeft className="w-5 h-5 text-white" />
+            </button>
+          </Link>
+          
 
           <div className="max-w-md mx-auto">
             <h1 className="text-4xl font-bold text-center mb-8">WELCOME BACK</h1>
             
+            {apiError && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm text-center">
+                {apiError}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <div>
@@ -133,19 +163,31 @@ export default function LoginPage() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 bg-gray-600 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+                disabled={loading}
+                className="w-full py-3 bg-gray-600 text-white rounded-full font-medium hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Log In
+                {loading ? 'Logging in...' : 'Log In'}
               </button>
 
               {/* Footer Links */}
-              <div className="text-center space-y-2 pt-4">
-                <a href="#" className="block text-sm text-gray-600 hover:text-gray-800">
+              <div className="text-center space-y-3 pt-4">
+                <a
+                  href="#"
+                  className="block text-sm text-gray-600 hover:text-gray-800 hover:underline transition-all"
+                >
                   Forgot Password?
                 </a>
-                <a href="#" className="block text-sm text-gray-600 hover:text-gray-800">
-                  Create Account
-                </a>
+
+                <div className="flex items-center justify-center gap-2 text-sm">
+                  <p className="text-gray-700">Don't have an account?</p>
+                  <Link
+                    to="/signup"
+                    className="text-gray-600 font-semibold hover:text-gray-900 hover:underline transition-all"
+                  >
+                    Create Account
+                  </Link>
+                </div>
+
               </div>
             </form>
           </div>
