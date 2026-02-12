@@ -67,7 +67,7 @@ export default function LoginPage() {
     <div className="w-full max-w-6xl">
         {/* Left Side - Form */}
         <div className="max-w-xl bg-gray-200 rounded-3xl p-12 relative">
-          <button className="absolute top-6 left-6 w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
+          <button className="absolute top-6 left-6 w-10 h-10 bg-gray-400 rounded-full flex items-center justify hover:bg-gray-500 transition-colors">
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
 
