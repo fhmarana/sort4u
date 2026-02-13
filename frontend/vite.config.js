@@ -16,6 +16,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': 'http://localhost:8000',
+      '/memory': 'http://localhost:8000',
+      '/app/uploads': 'http://localhost:8000',
     },
   },
 })
