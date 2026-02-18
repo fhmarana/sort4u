@@ -3,11 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.api import routes, memory_route
 from app.database import engine, Base
+from app.api import profile_route
 import os
-
-
-
-
 
 # Create Database tables
 Base.metadata.create_all(bind=engine)
@@ -23,6 +20,7 @@ app.add_middleware(
 )
 
 #Include API routers
+app.include_router(profile_route.router, prefix="/api/profile", tags=["profile"])
 app.include_router(routes.router)
 app.include_router(memory_route.router)
 
@@ -40,3 +38,4 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+

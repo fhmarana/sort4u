@@ -1,14 +1,19 @@
+import React, { useState, useEffect } from "react"; // Combined here
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Apple, Camera, Wallet, User } from "lucide-react";
+import LogoImg from "../assets/Logo.png";
+import Profile from "./Profile"; 
+import Logout from "./Logout";
 
 export default function Navbar() {
   const location = useLocation();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
 
-  // User data (hardcoded for now - replace with real data later)
-  const user = {
-    name: "John Doe",
-    avatar: null // Can add image URL later
-  };
+  const [userData, setUserData] = useState({
+    name: "Guest",
+    avatar: null
+  });
 
   const NavItems = [
     { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -17,65 +22,119 @@ export default function Navbar() {
     { path: "/budget-tracker", label: "Budget Tracker", icon: Wallet }
   ];
 
-  // Check if current path matches the nav item
+    const loadUser = () => {
+    const data = localStorage.getItem('user');
+    if (data) {
+      const storedUser = JSON.parse(data);
+      setUserData({
+        // This checks for 'full_name' first, then 'name' as a fallback
+        name: storedUser.full_name || storedUser.name || "User",
+        avatar: storedUser.image || null 
+      });
+    }
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
+  const handleProfileClose = () => {
+    setIsProfileOpen(false);
+    loadUser(); // Refresh the name/image in the navbar
+  };
+
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="fixed left-0 top-0 h-screen w-64 bg-gray-900 text-white flex flex-col">
-      <nav className="flex flex-col h-full">
-        {/* Logo Section */}
-        <div className="p-6 border-b border-gray-700">
-          <Link to="/dashboard" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">S4</span>
-            </div>
-            <span className="font-bold text-2xl">SORT4U</span>
-          </Link>
-        </div>
-
-        {/* Navigation Items */}
-        <div className="flex-1 px-4 py-6 space-y-2">
-          {NavItems.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.path);
-
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                  active
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "text-gray-300 hover:bg-gray-800 hover:text-white"
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                <span className="font-medium">{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Profile Section at Bottom */}
-        <div className="p-6 border-t border-gray-700">
-          <div className="flex items-center gap-3">
-            {/* Avatar */}
-            <div className="w-12 h-12 bg-linear-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-              {user.avatar ? (
-                <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
-              ) : (
-                <User className="w-6 h-6 text-white" />
-              )}
-            </div>
-
-            {/* Welcome and Name */}
-            <div className="flex-1">
-              <p className="text-xs text-gray-400">Welcome back</p>
-              <p className="text-sm font-semibold text-white truncate">{user.name}</p>
+    <>
+      <div className="fixed left-0 top-0 h-screen w-64 bg-gray-900 text-white flex flex-col border-r border-gray-800 z-40">
+        <nav className="flex flex-col h-full">
+          {/* Logo Section */}
+          <div className="p-3 border-b border-gray-800">
+            <div className="flex items-center gap-3">
+              <div className="w-18 h-15 flex items-center justify-center overflow-hidden">
+                <img src={LogoImg} alt="S4 Logo" className="w-full h-full object-cover" />
+              </div>
+              <span className="font-bold text-2xl tracking-tight text-gray-100">SORT4U</span>
             </div>
           </div>
-        </div>
-      </nav>
-    </div>
+
+          {/* Navigation Items */}
+          <div className="flex-1 px-4 py-6 space-y-2">
+            {NavItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    active
+                      ? "bg-gray-700 text-white shadow-md border border-gray-600"
+                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                  }`}
+                >
+                  <Icon className={`w-5 h-5 ${active ? "text-white" : "text-gray-500"}`} />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Profile Section */}
+          <div className="p-6 border-t border-gray-800 bg-gray-900/50 mt-auto">
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setIsProfileOpen(true)}
+                className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden cursor-pointer"
+              >
+                {userData.avatar ? (
+                  <img 
+                    src={userData.avatar} 
+                    alt={userData.name} 
+                    className="w-full h-full object-cover" 
+                  />
+                ) : (
+                  <User className="w-6 h-6 text-gray-400" />
+                )}
+              </button>
+              <div className="flex-1">
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Hello!</p>
+                <p className="text-sm font-semibold text-gray-200 truncate">{userData.name}</p>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      {/* --- MODALS RENDERED HERE --- */}
+      {isProfileOpen && (
+        <Profile 
+          onClose={handleProfileClose} 
+          onLogoutTrigger={() => {
+            setIsProfileOpen(false);
+            setIsLogoutOpen(true);   
+          }}
+        />
+      )}
+
+      {isLogoutOpen && (
+        <Logout 
+          onClose={() => {
+            setIsLogoutOpen(false);
+            setIsProfileOpen(true); 
+          }} 
+          onConfirm={() => {
+          // 1. THIS IS THE KEY: Wipe the storage
+          localStorage.removeItem('user'); // Clear user session
+          localStorage.removeItem('token'); // Clear auth token
+          localStorage.clear(); 
+          
+          // 2. Force a hard redirect to the login page
+          window.location.href = "/"; 
+        }}
+        />
+      )}
+    </>
   );
 }

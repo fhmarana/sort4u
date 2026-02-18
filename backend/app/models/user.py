@@ -15,3 +15,4 @@ class User(Base):
     created_at = Column(DateTime, default=func.now())
     
     memoryLane = relationship("Memory", back_populates = "user")
+    profile = relationship("Profile", back_populates="user", uselist=False)
