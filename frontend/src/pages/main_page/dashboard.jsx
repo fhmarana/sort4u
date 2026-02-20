@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './navbar'; 
+import Navbar from '../../feature/navbar';
 import { TrendingUp, Camera } from 'lucide-react';
 
 export default function HomeDashboard() {
@@ -24,8 +24,8 @@ export default function HomeDashboard() {
 
   return (
     <div className="flex min-h-screen bg-white font-sans text-gray-800 relative">
-      <Navbar/> 
-      
+      <Navbar />
+
       <main className="flex-1 ml-64 p-8 lg:p-12 min-w-0">
         <header className="mb-10 flex justify-between items-center">
           <h1 className="text-3xl font-black uppercase tracking-tight text-gray-900">
@@ -37,7 +37,7 @@ export default function HomeDashboard() {
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
           {/* Calorie Tracker */}
           <section className="bg-gray-200 rounded-[2.5rem] p-8">
-            <h2 className="text-xl font-bold mb-6 text-gray-700">Calorie Tracker</h2> 
+            <h2 className="text-xl font-bold mb-6 text-gray-700">Calorie Tracker</h2>
           </section>
 
           {/* Memory Lane */}
@@ -69,9 +69,9 @@ export default function HomeDashboard() {
 function StatBar({ width }) {
   return (
     <div className="w-full h-4 bg-white rounded-full overflow-hidden shadow-inner border border-gray-100">
-      <div 
-        className="h-full bg-gray-600 rounded-full transition-all duration-1000 ease-out" 
-        style={{ width }} 
+      <div
+        className="h-full bg-gray-600 rounded-full transition-all duration-1000 ease-out"
+        style={{ width }}
       />
     </div>
   );
