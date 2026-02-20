@@ -8,6 +8,10 @@ import MemoryLane from './feature/memory-lane'
 import CalorieTracker from './feature/calorie-tracker'
 import BudgetTracker from './feature/budget-tracker'
 import AddMemory from './feature/add-memory';
+import MemoryUploadContainer from './feature/memory-uploader/MemoryUploadContainer';
+import MemoryLaneUpload from './feature/memory-uploader/MemoryLaneUpload';
+
+
 function App() {
 
 
@@ -19,7 +23,7 @@ function App() {
         <Route path="/signup" element={<Signup />}/>
         <Route path="/dashboard" element={<HomeDashboard />}/>
         <Route path="/memory-lane" element={<MemoryLane />}/>
-        <Route path="/add-memory" element={<AddMemory />}/>
+        <Route path="/add-memory" element={<MemoryLaneUpload />}/>
         <Route path="/calorie-tracker" element={<CalorieTracker />}/> 
         <Route path="/budget-tracker" element={<BudgetTracker />}/>
       </Routes>
