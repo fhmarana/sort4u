@@ -1,0 +1,1 @@
+//idk if pano gagawin huhu(lowbat narin laptop q). SO STATIC UI PALANG SYA NASA BUDGET-TRACKER.JSX yung SUMMARYCARD
