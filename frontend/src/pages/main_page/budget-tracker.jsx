@@ -266,7 +266,7 @@ export default function BudgetTracker() {
                     onClick={() => setIsReportOpen(true)}
                     className="flex-1 sm:flex-none bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full text-xs font-medium transition-colors"
                   >
-                    Monthly Report
+                    Budget Report
                   </button>
                   <button
                     onClick={() => setIsAddTransaction(true)}
