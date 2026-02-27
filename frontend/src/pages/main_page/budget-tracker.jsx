@@ -216,12 +216,12 @@ export default function BudgetTracker() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f5f5f5] font-sans text-gray-800">
+    <div className="flex min-h-screen bg-[#f5f5f5] text-gray-800">
       <Navbar />
 
-      <main className="flex-1 lg:ml-64 p-4 md:p-8 w-full">
+      <main className="flex-1 ml-0 lg:ml-64 p-6 md:p-10 transition-all duration-300">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold text-black">Budget Tracker</h1>
+          <h1 className="text-2xl font-bold uppercase text-black">Budget Tracker</h1>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -239,7 +239,7 @@ export default function BudgetTracker() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                 <SummaryCard label="Total Budget" value={summary.budget_amount} />
                 <SummaryCard label="Income" value={summary.total_income} />
                 <SummaryCard label="Expense" value={summary.total_expense} />
