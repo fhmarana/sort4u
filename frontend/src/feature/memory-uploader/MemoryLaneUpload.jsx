@@ -35,14 +35,12 @@ const MemoryLaneUpload = () => {
   };
 
   return (
-    /* Changed font-family from Comic Sans to font-sans */
-    <div className="min-h-screen bg-white py-8 px-4 font-sans text-gray-800">
+    <div className="min-h-screen bg-white py-8 px-4 text-gray-800">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-8">
-          {/* Added font-black and uppercase to match dashboard header style */}
-          <h1 className="text-4xl font-black uppercase tracking-tight mb-2">Memory Lane</h1>
-          <p className="text-xl text-gray-600 mb-10">
+          <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-2">Memory Lane</h1>
+          <p className="text-xs md:text-base text-gray-600 mb-10">
             Photo-triggered reminders for the things you always forget
           </p>
         </div>

@@ -83,14 +83,13 @@ export default function MemoryLane() {
   });
 
   return (
-    <div className="flex min-h-screen bg-white font-sans text-gray-800">
+    <div className="flex min-h-screen bg-white text-gray-800">
       <Navbar />
 
       <main className="flex-1 ml-0 lg:ml-64 p-6 md:p-10 transition-all duration-300">
-
-        <header className="text-center mb-10 mt-12 lg:mt-0">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2 uppercase tracking-tight text-gray-900">Memory Lane</h1>
-          <p className="text-gray-500 text-sm md:text-lg font-medium">Photo-triggered reminders for the things you always forget</p>
+        <header className="text-center mb-10 mt-3 lg:mt-0">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2 uppercase text-gray-900">Memory Lane</h1>
+          <p className="text-gray-500 text-xs md:text-base font-medium">Photo-triggered reminders for the things you always forget</p>
         </header>
 
         <div className="flex justify-between items-center mb-10">

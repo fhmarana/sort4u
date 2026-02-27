@@ -85,7 +85,7 @@ return (
     <Navbar />
 
     <main className="flex-1 ml-0 lg:ml-64 p-6 md:p-10 transition-all duration-300">
-      <h1 className="text-2xl font-bold mb-6">Your Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-6 uppercase">Your Dashboard</h1>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6'>
 

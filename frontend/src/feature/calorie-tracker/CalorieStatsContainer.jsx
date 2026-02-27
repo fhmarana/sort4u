@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Flame, Flag, Utensils } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import CalorieHistoryModal from './CalorieHistoryModal';
 
 export default function CalorieStatsContainer({ 
@@ -7,64 +8,54 @@ export default function CalorieStatsContainer({
   foodCount, 
   totalCalories, 
   macros, 
-  onUpdateBaseGoal 
+  onUpdateBaseGoal,
+  history 
 }) {
   const [showHistory, setShowHistory] = useState(false);
   const [isEditingGoal, setIsEditingGoal] = useState(false);
   const [editGoalValue, setEditGoalValue] = useState(baseGoal);
 
   const handleGoalSave = () => {
-    const newGoal = parseInt(editGoalValue) || 2890;
-    onUpdateBaseGoal(newGoal);
+    onUpdateBaseGoal(parseInt(editGoalValue) || 2890);
     setIsEditingGoal(false);
   };
 
-  const handleGoalCancel = () => {
-    setEditGoalValue(baseGoal);
-    setIsEditingGoal(false);
-  };
+  // --- RECHARTS DATA ---
+  // If calories exceed goal, we cap the progress bar at 100% 
+  // but keep the text showing the real number.
+  const chartData = [
+    { name: 'Consumed', value: Math.min(totalCalories, baseGoal) },
+    { name: 'Remaining', value: Math.max(0, baseGoal - totalCalories) }
+  ];
 
-  // Circle calculations
-  const radius = 140;
-  const circumference = 2 * Math.PI * radius;
-  const progress = (totalCalories / baseGoal) * circumference;
+  const COLORS = ['#c1eac0', 'rgba(255, 255, 255, 0.2)'];
 
   return (
     <>
-      <div className="bg-gray-200 rounded-4xl p-4">
-        {/* Top Section - Base Goal & Food */}
-        <div className="flex justify-between items-start mb-8">
-          {/* Base Goal */}
-          <div className="flex items-start gap-3">
-            <Flag className="w-6 h-6 mt-1" />
+      <div className="bg-gray-400 p-6 rounded-3xl shadow-md text-white">
+        {/* Top Header Stats */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg">
+              <Flag className="w-5 h-5 text-white" />
+            </div>
             <div>
-              <p className="text-base font-medium text-gray-800">Base Goal</p>
+              <p className="text-[10px] font-bold uppercase opacity-80">Base Goal</p>
               {isEditingGoal ? (
                 <div className="flex items-center gap-2 mt-1">
                   <input
                     type="number"
                     value={editGoalValue}
                     onChange={(e) => setEditGoalValue(e.target.value)}
-                    className="w-24 px-2 py-1 bg-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-500 text-xl font-semibold"
+                    className="w-20 px-2 py-0.5 bg-white text-gray-800 rounded text-sm font-bold outline-none"
                     autoFocus
                   />
-                  <button
-                    onClick={handleGoalSave}
-                    className="text-green-600 hover:text-green-700 text-sm font-medium"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={handleGoalCancel}
-                    className="text-red-600 hover:text-red-700 text-sm font-medium"
-                  >
-                    Cancel
-                  </button>
+                  <button onClick={handleGoalSave} className="text-xs font-bold underline">Save</button>
                 </div>
               ) : (
-                <button
-                  onClick={() => setIsEditingGoal(true)}
-                  className="text-2xl font-semibold hover:text-gray-600 transition-colors"
+                <button 
+                  onClick={() => setIsEditingGoal(true)} 
+                  className="text-lg font-black hover:opacity-70 transition-opacity"
                 >
                   {baseGoal.toLocaleString()}
                 </button>
@@ -72,96 +63,83 @@ export default function CalorieStatsContainer({
             </div>
           </div>
 
-          {/* Food Count */}
-          <div className="flex items-start gap-3">
-            <Utensils className="w-6 h-6 mt-1" />
-            <div>
-              <p className="text-base font-medium text-gray-800">Food</p>
-              <p className="text-2xl font-semibold">{foodCount}</p>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg">
+              <Utensils className="w-5 h-5 text-white" />
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] font-bold uppercase opacity-80">Food Count</p>
+              <p className="text-lg font-black">{foodCount}</p>
             </div>
           </div>
         </div>
 
-        {/* Main Layout: Circle on Left, Buttons on Right */}
-        <div className="flex items-center gap-1">
-          {/* Circle Display */}
-          <div className="flex-shrink-0">
-            <div className="relative w-80 h-80">
-              <svg className="w-full h-full transform -rotate-90">
-                {/* Background Circle */}
-                <circle
-                  cx="160"
-                  cy="160"
-                  r={radius}
-                  stroke="#d1d5db"
-                  strokeWidth="20"
-                  fill="none"
-                />
-                {/* Progress Circle */}
-                <circle
-                  cx="160"
-                  cy="160"
-                  r={radius}
-                  stroke="#4b5563"
-                  strokeWidth="20"
-                  fill="none"
-                  strokeDasharray={circumference}
-                  strokeDashoffset={circumference - progress}
-                  strokeLinecap="round"
-                  className="transition-all duration-500"
-                />
-              </svg>
-              
-              {/* Center Content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <Flame className="w-16 h-16 mb-3 text-gray-700" />
-                <p className="text-base font-semibold text-gray-700 uppercase tracking-wider mb-2">
-                  Total Calories
-                </p>
-                <p className="text-7xl font-bold">{totalCalories}</p>
-              </div>
+        {/* Main Content */}
+        <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 items-center">
+          
+          {/* RECHARTS PIE CHART CONTAINER */}
+          <div className="relative w-full aspect-square max-w-[260px] md:max-w-[300px] mx-auto">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="75%"
+                  outerRadius="90%"
+                  startAngle={90}
+                  endAngle={-270}
+                  paddingAngle={0}
+                  dataKey="value"
+                  stroke="none"
+                  cornerRadius={10}
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+
+            {/* Absolute Centered Text */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+              <Flame className="w-8 h-8 mb-1 text-white opacity-90" />
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Calories</p>
+              <p className="text-5xl md:text-6xl font-black leading-none">{totalCalories}</p>
             </div>
           </div>
 
-          {/* Macro Display + History Button */}
-          <div className="flex-1 space-y-4">
-            {/* Macro Boxes Grid */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {/* Protein */}
-              <div className="px-2 py-1 bg-gray-400 rounded-xl min-h-[10px] flex flex-col items-center justify-center">
-                <p className="text-l font-bold">{macros.protein}g Protein</p>
-              </div>
-
-              {/* Carbs */}
-              <div className="px-2 py-1 bg-gray-400 rounded-xl min-h-[10px] flex flex-col items-center justify-center">
-                <p className="text-l font-bold">{macros.carbs}g Carbs</p>
-              </div>
-
-              {/* Fat */}
-              <div className="px-2 py-1 bg-gray-400 rounded-xl min-h-[10px] flex flex-col items-center justify-center">
-                <p className="text-l font-bold">{macros.fat}g Fat</p>
-              </div>
-
-              {/* Fiber */}
-              <div className="px-2 py-1 bg-gray-400 rounded-xl min-h-[10px] flex flex-col items-center justify-center">
-                <p className="text-l font-bold">{macros.fiber}g Fiber</p>
-              </div>
+          {/* Macro Grid */}
+          <div className="w-full space-y-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-2 gap-3">
+              {['protein', 'carbs', 'fat', 'fiber'].map((macro) => (
+                <div 
+                  key={macro} 
+                  className="bg-white p-3 rounded-2xl shadow-sm text-center flex flex-col items-center justify-center"
+                >
+                  <p className="text-[10px] font-bold text-gray-400 uppercase leading-tight">{macro}</p>
+                  <p className="text-base lg:text-lg font-black text-gray-800 leading-tight">
+                    {macros?.[macro] || 0}g
+                  </p>
+                </div>
+              ))}
             </div>
-
-            {/* Calorie History Button */}
+            
             <button
               onClick={() => setShowHistory(true)}
-              className="w-full px-3 py-2 bg-gray-400 hover:bg-gray-500 rounded-xl transition-colors font-semibold text-base min-h-[10px]"
+              className="w-full py-3 bg-white/20 hover:bg-white/40 text-white rounded-full transition-all font-bold text-xs uppercase tracking-widest border border-white/10"
             >
-              Calorie History
+              View History
             </button>
           </div>
         </div>
       </div>
 
-      {/* History Modal */}
       {showHistory && (
-        <CalorieHistoryModal onClose={() => setShowHistory(false)} />
+        <CalorieHistoryModal 
+          onClose={() => setShowHistory(false)} 
+          history={history} 
+        />
       )}
     </>
   );
