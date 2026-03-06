@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.models import User
+from app.models import User, Profile
 from app.schemas import UserCreate, UserLogin, Token, UserResponse
 from app.utils import get_password_hash, verify_password, create_access_token
 from datetime import timedelta
@@ -31,11 +31,16 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    
+
+    # Auto-create an empty profile for the new user
+    new_profile = Profile(user_id=new_user.id, name=new_user.full_name)
+    db.add(new_profile)
+    db.commit()
+
     # Create access token
     access_token = create_access_token(
             data = {"sub": str(new_user.id)},
-            expires_delta= timedelta(minutes=30)
+            expires_delta=timedelta(minutes=60)
     )
     
     return {
@@ -60,7 +65,7 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
     
     access_token = create_access_token(
         data = {"sub": str(user.id)},
-        expires_delta= timedelta(minutes=30)
+        expires_delta=timedelta(minutes=60)
     )
     
     return{

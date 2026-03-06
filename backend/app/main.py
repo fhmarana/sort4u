@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import routes
+from fastapi.staticfiles import StaticFiles
+from app.api import routes, memory_route, budget_routes, category_routes, transaction_route, analytics_routes
 from app.database import engine, Base
-
-
-
-
+from app.api import profile_route
+from app.api import dashboard_route
+from app.api import calorie_routes
+import os
 
 # Create Database tables
 Base.metadata.create_all(bind=engine)
@@ -21,7 +22,19 @@ app.add_middleware(
 )
 
 #Include API routers
+app.include_router(profile_route.router, prefix="/api/profile", tags=["profile"])
 app.include_router(routes.router)
+app.include_router(memory_route.router)
+app.include_router(budget_routes.router)
+app.include_router(category_routes.router)
+app.include_router(transaction_route.router)
+app.include_router(analytics_routes.router)
+app.include_router(dashboard_route.router)
+app.include_router(calorie_routes.router)
+
+# Serve uploaded files
+os.makedirs("app/uploads", exist_ok=True)
+app.mount("/app/uploads", StaticFiles(directory="app/uploads"), name="uploads")
 
 @app.get("/")
 def read_root():
@@ -29,7 +42,7 @@ def read_root():
             "status": "running",
             "version": "1.0.0"
             }
-    
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}

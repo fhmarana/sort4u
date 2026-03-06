@@ -4,6 +4,7 @@ import checkIcon from "@/assets/check.png"
 import plateIcon from "@/assets/plate.png";
 import reminderIcon from "@/assets/Reminder.png";
 import moneyIcon from "@/assets/Money.png"
+import logoIcon from "@/assets/Logo Design for SORT4U Web Application(1).png"
 
 
 
@@ -12,20 +13,20 @@ export default function LandingPage() {
         <div className="w-full">
             
             {/* NavBar Section - Responsive */}
-            <nav className="flex justify-between items-center bg-white py-4 md:py-6 px-4 sm:px-8 md:px-12 lg:px-20 border-b">
-                <div>
+            <nav className="flex justify-between items-center bg-[#f9ffef] py-4 md:py-6 px-4 sm:px-8 md:px-12 lg:px-20 border-b">
+                <div className="flex items-center gap-2">
+                    <img src={logoIcon} alt="SORT4U Logo" className="h-8 w-8 md:h-10 md:w-10" />
                     <span className="font-bold text-xl sm:text-2xl">SORT4U</span>
                 </div>
 
                 <div className="flex gap-2 sm:gap-3">
                     <Link to="/login">
-                        <Button className="px-3 sm:px-4 md:px-6 py-5 bg-cyan-400 hover:bg-cyan-500 text-sm md:text-base">
-                            Log in
+                        <Button className="px-3 sm:px-4 md:px-6 py-5 bg-[#64A9BB] hover:bg-white text-sm md:text-base">                              Log in
                         </Button>
                     </Link>
                     
                     <Link to="/signup">
-                        <Button variant="outline" className="px-3 sm:px-4 md:px-6 py-5  text-black text-sm md:text-base">
+                        <Button variant="outline" className="px-3 sm:px-4 md:px-6 py-5 hover:bg-[#83bca9] text-black text-sm md:text-base">
                             Sign up
                         </Button>
                     </Link>
@@ -33,13 +34,13 @@ export default function LandingPage() {
                 </div>
             </nav>
 
-            {/* Hero Section - Responsive: mobile (min-h-screen), tablet (h-auto), desktop (h-[1024px]) */}
-            <section className="w-full min-h-screen lg:h-192 bg-white flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+            {/* Hero Section - Responsive with gradient background */}
+            <section className="w-full min-h-screen lg:h-192 bg-gradient-to-b from-[#83bca9] via-white to-white-50 flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight">
-                        <span className="italic">Everything you need to stay on track</span>
+                        <span className="italic">Everything you need to keep track</span>
                         <br />
-                        <span className="font-bold not-italic">Sorted in one place.</span>
+                        <span className="font-bold not-italic">Sorted out for you.</span>
                     </h1>
 
                     <p className="text-base sm:text-lg md:text-xl font-semibold mb-3 md:mb-4 px-2">
@@ -50,17 +51,11 @@ export default function LandingPage() {
                         SORT4U brings your daily essentials together in one clean, easy-to-use web app designed
                         for students and young professionals who want life to feel more organized—not more complicated.
                     </p>
-
-                    <Link to="/signup">
-                        <Button className="px-8 sm:px-10 py-4 sm:py-6 text-base sm:text-lg rounded-full bg-gray-800 hover:bg-gray-900 text-amber-50">
-                            Get Started
-                        </Button>
-                    </Link>
                 </div>
             </section>
 
-            {/* What is SORT4U Section */}
-            <section className="w-full min-h-screen lg:min-h-256 bg-white flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+            {/* What is SORT4U Section with gradient background */}
+            <section className="w-full min-h-screen lg:min-h-256 bg-gradient-to-b from-white-50 via-blue-50 to-white flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
                 <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 md:mb-8">What is SORT4U?</h2>
 
@@ -83,15 +78,15 @@ export default function LandingPage() {
                                 No forms. No guessing. No overload.
                             </p>
                             <p className="text-xs sm:text-sm lg:text-[14px] mb-3 md:mb-9 text-black space-y-1.5 md:space-y-2">
-                                Just type the name of the food you ate, and SORT4U’s AI instantly estimates its calorie content.
-                                It’s a faster, simpler way to stay mindful of what you eat—perfect for busy days and real-world meals.
+                                Just type the name of the food you ate, and SORT4U's AI instantly estimates its calorie content.
+                                It's a faster, simpler way to stay mindful of what you eat—perfect for busy days and real-world meals.
                             </p>
 
                             <p className="text-xs sm:text-sm lg:text-[14px] mb-3 md:mb-4 font-bold">
                                 Why it works?
                             </p>
                             <p className="text-xs sm:text-sm lg:text-[14px] text-black space-y-1.5 md:space-y-2">
-                                You track consistently because it’s quick, intuitive, and doesn’t demand nutrition expertise.
+                                You track consistently because it's quick, intuitive, and doesn't demand nutrition expertise.
                             </p>
                         </div>
 
@@ -100,7 +95,7 @@ export default function LandingPage() {
                             <h4 className="text-lg md:text-xl font-bold mb-3 md:mb-4">Memory Lane Reminders</h4>
                             <img src={reminderIcon} alt="Calorie Track" className="mx-auto block h-30 w-30 md:h-40 md:w-35 object-contain" />
                             <p className="text-xs sm:text-sm lg:text-[14px] mb-3 md:mb-4 font-bold">
-                                Reminders don’t have to feel cold or forgettable.
+                                Reminders don't have to feel cold or forgettable.
                             </p>
                             <p className="text-xs sm:text-sm lg:text-[14px] mb-3 md:mb-4 text-black space-y-1.5 md:space-y-2">
                                 Upload a photo, add a reminder, set a date, include hashtags, and write a short note. SORT4U turns reminders into
@@ -139,7 +134,7 @@ export default function LandingPage() {
             </section>
 
             {/* Why Choose SORT4U Section */}
-            <section className="w-full min-h-screen lg:min-h-225 bg-white flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+            <section className="w-full min-h-screen lg:min-h-225 bg-gradient-to-b from-white via-white to-[#99cbda] flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20">
                 <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-10 md:mb-16">Why Choose SORT4U?</h2>
 
@@ -190,17 +185,41 @@ export default function LandingPage() {
                             </p>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    {/* CTA Section */}
-                    <div className="mt-8 md:mt-16">
-                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 px-4">Start Sorting Your Life Today</h3>
+            <section className="w-full min-h-screen lg:min-h-[900px] bg-gradient-to-b from-[#99cbda] via-white to-[#99cbda] flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+                
+                {/* Overlay Container - soft mint/sage color like reference */}
+                <div className="relative z-10 bg-[#e8f0e8]/90 backdrop-blur-sm rounded-3xl p-8 md:p-16 max-w-4xl w-full mx-auto shadow-2xl">
+                    <div className="text-center space-y-6">
+                        <div className="mt-8 md:mt-16">
+                        <h3 className="text-3xl sm:text-5xl md:text-5xl font-bold mb-4 md:mb-6 px-4">Start Sorting Your Life Today</h3>
                         <p className="text-sm sm:text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto px-4">
                             Stay organized. Stay mindful. Stay in control.<br />
                             SORT4U helps you keep it all together—without the hassle.
                         </p>
                     </div>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+                            <Link to="/signup">
+                                <Button className="px-8 py-6 text-lg rounded-full bg-[#64A9BB] hover:bg-[#406768] text-white">
+                                    Create Your Account
+                                </Button>
+                            </Link>
+                            <Link to="/login">
+                                <Button variant="outline" className="px-8 py-6 text-lg rounded-full border-2 border-gray-700 text-gray-700 hover:bg-gray-100">
+                                    Learn More
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </section>
+
+            {/* Footer */}
+            <footer className="w-full bg-gray-900 text-white py-8 px-4 text-center">
+                <p className="text-sm">© 2026 SORT4U. All rights reserved.</p>
+            </footer>
         </div>
     )
 }
