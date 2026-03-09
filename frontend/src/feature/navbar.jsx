@@ -72,7 +72,7 @@ export default function Navbar() {
       <div className={`
         fixed left-0 top-0 h-screen w-48 bg-gray-900 text-white flex flex-col border-r border-gray-800 z-40
         transition-transform duration-300 ease-in-out
-        overflow-y-auto  {/* <-- ADD THIS TO ENABLE SCROLLING */}
+        overflow-y-auto
         ${isMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
 

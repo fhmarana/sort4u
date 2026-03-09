@@ -3,8 +3,8 @@ from typing import Optional
 
 class ProfileBase(BaseModel):
     name: str
-    age: int
-    about: str
+    age: Optional[int] = None
+    about: Optional[str] = None
     image: Optional[str] = None
 
 class ProfileCreate(ProfileBase):
