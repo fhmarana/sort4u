@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Signup from "@/assets/SignupGIF.gif";
 import SignupMB from "@/assets/SignupMB.gif";
 import axios from 'axios';
+import LSBackgroundDecorations from "@/components/LSBackDeco";
+import SignupEmailVerModal from "@/feature/signup-verify/SignupEmailVer";
+import CreatedAccount from "@/feature/signup-verify/CreatedAccountModal";
 
 export default function SignupPage() {
 const navigate = useNavigate();
 const [isLoading, setIsLoading] = useState(false);
 const [errors, setErrors] = useState({});
 const [apiError, setApiError] = useState('');
+const [showModal, setShowModal] = useState(false);
+const [modalState, setModalState] = useState(null)
+const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -25,6 +31,7 @@ const [apiError, setApiError] = useState('');
 
   const validateForm = () => {
     const newErrors = {};
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/;
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -35,44 +42,74 @@ const [apiError, setApiError] = useState('');
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password = 'Must include at least one uppercase letter and one special character';
     }
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
-		e.preventDefault();
-		const newErrors = validateForm();
+    e.preventDefault();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
-		if (Object.keys(newErrors).length > 0) {
-			setErrors(newErrors);
-			return;
-		}
+    setIsLoading(true);
+    setApiError('');
 
-		setIsLoading(true);
-		setApiError('');
+    try {
+      // 2. Initial Signup request
+      await axios.post('/auth/signup', {
+        full_name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+      setModalState('otp');
+      setShowModal(true); 
+    } catch (error) {
+      setApiError(error.response?.data?.detail || 'Signup failed.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-		try {
-			const response = await axios.post('/auth/signup', {
-				full_name: formData.name,
-				email: formData.email,
-				password: formData.password,
-			});
+  const handleVerify = async (otp) => {
+    try {
+      // 1. Verify OTP - Must use full URL and correct payload object
+      await axios.post('http://localhost:8000/auth/verify-signup-otp', { 
+        email: formData.email, 
+        otp: otp 
+      });
+      
+      // 2. Login
+      const loginResponse = await axios.post('http://localhost:8000/auth/login', {
+        email: formData.email,
+        password: formData.password
+      });
 
-			localStorage.setItem('token', response.data.access_token);
-			localStorage.setItem('user', JSON.stringify(response.data.user));
-			navigate('/dashboard');
-		} catch (error) {
-			const message = error.response?.data?.detail || 'Signup failed. Please try again.';
-			setApiError(message);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+      localStorage.setItem('token', loginResponse.data.access_token);
+      localStorage.setItem('user', JSON.stringify(loginResponse.data.user));
+
+      // 3. Switch to success modal
+      setModalState('success');
+    } catch (error) {
+      // Extract the specific error message from FastAPI
+      console.log("Backend Raw Error:", error.response?.data);
+      const message = error.response?.data?.detail || "Invalid code";
+      console.error("Verification Error:", message);
+      
+      // Re-throw so the Modal's catch block can catch it
+      throw new Error(message); 
+    }
+  };
 
   return (
     <div className="h-[100dvh] w-full bg-white flex items-center justify-center p-4 sm:p-8 overflow-hidden">
+      <LSBackgroundDecorations />
       <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-8 items-center justify-center h-full">
-        
+
         {/* Back Button */}
         <Link to="/" className="absolute top-6 left-6 z-20">
           <button className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
@@ -85,7 +122,7 @@ const [apiError, setApiError] = useState('');
           
           <div className="max-w-md mx-auto w-full">
             <header className="text-center mb-6 sm:mb-8">
-              <h1 className="text-2xl sm:text-4xl font-bold mb-1">Create Your Account</h1>
+              <h1 className="text-2xl sm:text-4xl font-bold mb-1">CREATE YOUR ACCOUNT</h1>
               <p className="text-xs sm:text-sm text-gray-500">Please fill in details to create your account</p>
             </header>
             {apiError && (
@@ -127,14 +164,23 @@ const [apiError, setApiError] = useState('');
 
               <div className="mb-2">
                 <label className="block text-xs font-medium text-gray-700 mb-1">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 ${errors.password ? 'ring-2 ring-red-500' : ''}`}
-                  placeholder="Enter your password"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 bg-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 ${errors.password ? 'ring-2 ring-red-500' : ''}`}
+                    placeholder="Enter your password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                  </button>
+                </div>
                 {errors.password && (
 									<p className="mt-1 text-sm text-red-600">{errors.password}</p>
 								)}
@@ -186,6 +232,20 @@ const [apiError, setApiError] = useState('');
           </div>
         </div>
       </div>
+      {/* Modal Logic */}
+        {modalState === 'otp' && (
+          <SignupEmailVerModal 
+            email={formData.email} 
+            onVerify={handleVerify} 
+            onClose={() => setModalState(null)} 
+          />
+        )}
+
+        {modalState === 'success' && (
+          <CreatedAccount 
+            onGoToDashboard={() => navigate('/dashboard')} 
+          />
+        )}
     </div>
   );
 }

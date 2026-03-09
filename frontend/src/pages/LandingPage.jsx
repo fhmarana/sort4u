@@ -4,39 +4,43 @@ import checkIcon from "@/assets/check.png"
 import plateIcon from "@/assets/plate.png";
 import reminderIcon from "@/assets/Reminder.png";
 import moneyIcon from "@/assets/Money.png"
-import logoIcon from "@/assets/Logo Design for SORT4U Web Application(1).png"
-
+import logoIcon from "@/assets/Logo.png"
+import BackgroundDecorations from "@/components/BackgroundDesign";
 
 
 export default function LandingPage() {
     return (
-        <div className="w-full">
-            
-            {/* NavBar Section - Responsive */}
-            <nav className="flex justify-between items-center bg-[#f9ffef] py-4 md:py-6 px-4 sm:px-8 md:px-12 lg:px-20 border-b">
-                <div className="flex items-center gap-2">
-                    <img src={logoIcon} alt="SORT4U Logo" className="h-8 w-8 md:h-10 md:w-10" />
-                    <span className="font-bold text-xl sm:text-2xl">SORT4U</span>
-                </div>
+        <div className="w-full bg-gray-50 relative overflow-hidden">
+            {/* Background Layer */}
+            <BackgroundDecorations />
 
-                <div className="flex gap-2 sm:gap-3">
-                    <Link to="/login">
-                        <Button className="px-3 sm:px-4 md:px-6 py-5 bg-[#64A9BB] hover:bg-white text-sm md:text-base">                              Log in
-                        </Button>
-                    </Link>
-                    
-                    <Link to="/signup">
-                        <Button variant="outline" className="px-3 sm:px-4 md:px-6 py-5 hover:bg-[#83bca9] text-black text-sm md:text-base">
-                            Sign up
-                        </Button>
-                    </Link>
-                    
-                </div>
-            </nav>
+            {/* NavBar Section - Responsive */}
+            <div className="relative z-15">
+                <nav className="flex justify-between items-center  bg-gray-800 text-white py-4 md:py-5 px-4 sm:px-8 md:px-12 lg:px-20 border-b">
+                    <div className="flex items-center gap-3">
+                        <img src={logoIcon} alt="SORT4U Logo" className="h-10 w-10 md:h-13 md:w-13 object-contain"/>
+                        <span className="font-bold text-xl sm:text-2xl">SORT4U</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        <Link to="/login">
+                            <Button className="px-3 sm:px-4 md:px-6 py-5 bg-[#64A9BB] hover:bg-gray-400 text-sm md:text-base">
+                                Log in
+                            </Button>
+                        </Link>
+                        
+                        <Link to="/signup">
+                            <Button variant="outline" className="px-3 sm:px-4 md:px-6 py-5 hover:bg-gray-400 text-white text-sm md:text-base">
+                                Sign up
+                            </Button>
+                        </Link>  
+                    </div>
+                </nav>
+            </div>
 
             {/* Hero Section - Responsive with gradient background */}
-            <section className="w-full min-h-screen lg:h-192 bg-gradient-to-b from-[#83bca9] via-white to-white-50 flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
-                <div className="max-w-4xl mx-auto text-center">
+            <section className="w-full min-h-screen lg:h-192 bg-gray-100 flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+                <div className="max-w-4xl mx-auto text-center relative z-10">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight">
                         <span className="italic">Everything you need to keep track</span>
                         <br />
@@ -55,7 +59,7 @@ export default function LandingPage() {
             </section>
 
             {/* What is SORT4U Section with gradient background */}
-            <section className="w-full min-h-screen lg:min-h-256 bg-gradient-to-b from-white-50 via-blue-50 to-white flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+            <section className="w-full min-h-screen lg:min-h-256 bg-gray-100 flex items-center justify-center px-4 sm:px-6 py-12 md:py-20">
                 <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 md:mb-8">What is SORT4U?</h2>
 
@@ -134,7 +138,7 @@ export default function LandingPage() {
             </section>
 
             {/* Why Choose SORT4U Section */}
-            <section className="w-full min-h-screen lg:min-h-225 bg-gradient-to-b from-white via-white to-[#99cbda] flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+            <section className="w-full min-h-screen lg:min-h-225 bg-gray-100 flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20">
                 <div className="max-w-6xl mx-auto text-center">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-10 md:mb-16">Why Choose SORT4U?</h2>
 
@@ -188,11 +192,11 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <section className="w-full min-h-screen lg:min-h-[900px] bg-gradient-to-b from-[#99cbda] via-white to-[#99cbda] flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20">
+            <section className="w-full min-h-screen lg:min-h-[900px] bg-gray-100 flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20">
                 
                 {/* Overlay Container - soft mint/sage color like reference */}
-                <div className="relative z-10 bg-[#e8f0e8]/90 backdrop-blur-sm rounded-3xl p-8 md:p-16 max-w-4xl w-full mx-auto shadow-2xl">
-                    <div className="text-center space-y-6">
+                <div className="relative z-10 bg-yellow-100 backdrop-blur-sm rounded-3xl p-8 md:p-16 max-w-4xl w-full mx-auto shadow-2xl">
+                    <div className="text-center space-y-10">
                         <div className="mt-8 md:mt-16">
                         <h3 className="text-3xl sm:text-5xl md:text-5xl font-bold mb-4 md:mb-6 px-4">Start Sorting Your Life Today</h3>
                         <p className="text-sm sm:text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto px-4">
@@ -217,7 +221,7 @@ export default function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className="w-full bg-gray-900 text-white py-8 px-4 text-center">
+            <footer className="relative z-10 w-full h-15 bg-gray-900 text-white py-5 px-4 text-center">
                 <p className="text-sm">© 2026 SORT4U. All rights reserved.</p>
             </footer>
         </div>
