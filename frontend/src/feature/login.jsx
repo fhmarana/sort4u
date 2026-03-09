@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import LoginGif from "@/assets/LoginGIF.gif";
+import LoginGif from "@/assets/Loginif.gif";
 import waving from "@/assets/waving.gif";
 import LSBackgroundDecorations from "@/components/LSBackDeco";
 
